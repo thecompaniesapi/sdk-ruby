@@ -1,0 +1,91 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ruby-version: ['3.0']
+    
+    name: Test Ruby ${{ matrix.ruby-version }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+    
+    - name: Cache gems
+      uses: actions/cache@v3
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ matrix.ruby-version }}-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-${{ matrix.ruby-version }}-
+    
+    - name: Install dependencies
+      run: |
+        bundle config path vendor/bundle
+        bundle install --jobs 4 --retry 3
+    
+    - name: Validate gemspec
+      run: gem build thecompaniesapi.gemspec
+    
+    - name: Check syntax
+      run: |
+        find lib test -name "*.rb" -exec ruby -c {} \;
+    
+    - name: Run unit tests
+      run: bundle exec rake test:unit
+    
+    - name: Run integration tests
+      env:
+        TCA_API_TOKEN: ${{ secrets.TCA_API_TOKEN }}
+      run: bundle exec rake test:integration
+    
+    - name: Check code style (if RuboCop is available)
+      run: |
+        if bundle list | grep -q rubocop; then
+          bundle exec rubocop
+        else
+          echo "RuboCop not found, skipping style check"
+        fi
+      continue-on-error: true
+
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint & Security
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.2'
+        bundler-cache: true
+    
+    - name: Install dependencies
+      run: bundle install --jobs 4 --retry 3
+    
+    - name: Check for security vulnerabilities
+      run: |
+        if bundle list | grep -q bundler-audit; then
+          bundle exec bundler-audit --update
+        else
+          echo "bundler-audit not found, skipping security check"
+        fi
+      continue-on-error: true
+    
+    - name: Check for outdated gems
+      run: bundle outdated
+      continue-on-error: true 

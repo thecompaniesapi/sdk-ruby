@@ -1,0 +1,100 @@
+name: Release & Publish
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    name: Publish to RubyGems
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.1'
+        bundler-cache: true
+    
+    - name: Install dependencies
+      run: bundle install --jobs 4 --retry 3
+    
+    - name: Run tests
+      env:
+        TCA_API_TOKEN: ${{ secrets.TCA_API_TOKEN }}
+      run: bundle exec rake test
+    
+    - name: Build gem
+      run: gem build thecompaniesapi.gemspec
+    
+    - name: Extract version
+      id: extract_version
+      run: |
+        VERSION=${GITHUB_REF#refs/tags/}
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "clean_version=${VERSION#v}" >> $GITHUB_OUTPUT
+    
+    - name: Validate gem version matches tag
+      run: |
+        GEM_VERSION=$(ruby -e "require './lib/thecompaniesapi/version'; puts TheCompaniesAPI::VERSION")
+        TAG_VERSION="${{ steps.extract_version.outputs.clean_version }}"
+        if [ "$GEM_VERSION" != "$TAG_VERSION" ]; then
+          echo "❌ Gem version ($GEM_VERSION) doesn't match tag version ($TAG_VERSION)"
+          exit 1
+        fi
+        echo "✅ Gem version matches tag version: $GEM_VERSION"
+    
+    - name: Publish to RubyGems
+      env:
+        RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+      run: |
+        if [ -n "$RUBYGEMS_API_KEY" ]; then
+          echo "Publishing gem to RubyGems..."
+          mkdir -p ~/.gem
+          echo ":rubygems_api_key: $RUBYGEMS_API_KEY" > ~/.gem/credentials
+          chmod 0600 ~/.gem/credentials
+          gem push thecompaniesapi-${{ steps.extract_version.outputs.clean_version }}.gem
+          echo "✅ Gem published successfully to RubyGems"
+        else
+          echo "⚠️ RubyGems API key not found. Skipping gem publication."
+        fi
+    
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ steps.extract_version.outputs.version }}
+        name: Release ${{ steps.extract_version.outputs.version }}
+        body: |
+          ## 🚀 Release ${{ steps.extract_version.outputs.version }}
+          
+          ### 📦 Installation
+          
+          ```ruby
+          gem 'thecompaniesapi', '~> ${{ steps.extract_version.outputs.clean_version }}'
+          ```
+          
+          Or install directly:
+          
+          ```bash
+          gem install thecompaniesapi -v ${{ steps.extract_version.outputs.clean_version }}
+          ```
+          
+          ### 📋 What's Changed
+          
+          See the [commit history](https://github.com/${{ github.repository }}/commits/${{ steps.extract_version.outputs.version }}) for detailed changes.
+          
+          ### 🔗 Links
+          
+          - 📖 [Documentation](https://github.com/${{ github.repository }}#readme)
+          - 💎 [RubyGems Package](https://rubygems.org/gems/thecompaniesapi)
+          - 🌐 [The Companies API](https://www.thecompaniesapi.com)
+          - 📚 [API Documentation](https://www.thecompaniesapi.com/api)
+        draft: false
+        prerelease: false
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
