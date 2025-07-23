@@ -1,8 +1,6 @@
 # The Companies API SDK for Ruby
 
 [![Gem Version][gem-version-src]][gem-version-href]
-[![Gem Downloads][gem-downloads-src]][gem-downloads-href]
-[![License][license-src]][license-href]
 
 A fully-featured Ruby SDK for [The Companies API](https://www.thecompaniesapi.com), providing type-safe access to company data, locations, industries, technologies, job titles, lists, and more.
 
@@ -545,7 +543,3 @@ schema = response # The OpenAPI schema
 
 [gem-version-src]: https://img.shields.io/gem/v/thecompaniesapi?style=flat&colorA=080f12&colorB=1fa669
 [gem-version-href]: https://rubygems.org/gems/thecompaniesapi
-[gem-downloads-src]: https://img.shields.io/gem/dm/thecompaniesapi?style=flat&colorA=080f12&colorB=1fa669
-[gem-downloads-href]: https://rubygems.org/gems/thecompaniesapi
-[license-src]: https://img.shields.io/github/license/thecompaniesapi/sdk-ruby.svg?style=flat&colorA=080f12&colorB=1fa669
-[license-href]: https://github.com/thecompaniesapi/sdk-ruby/blob/main/LICENSE
