@@ -74,8 +74,8 @@ response = tca.search_companies(
   size: 25
 )
 
-companies = response['data']['companies'] # Companies that match the query
-meta = response['data']['meta'] # Meta information
+companies = response['companies'] # Companies that match the query
+meta = response['meta'] # Meta information
 ```
 
 ### Search companies by name
@@ -90,8 +90,8 @@ response = tca.search_companies_by_name(
   size: 2
 )
 
-companies = response['data']['companies'] # Companies that match the name
-meta = response['data']['meta'] # Meta information
+companies = response['companies'] # Companies that match the name
+meta = response['meta'] # Meta information
 ```
 
 ### Search companies using a prompt
@@ -105,8 +105,8 @@ response = tca.search_companies_by_prompt(
   size: 25
 )
 
-companies = response['data']['companies'] # Companies that match the prompt
-meta = response['data']['meta'] # Meta information
+companies = response['companies'] # Companies that match the prompt
+meta = response['meta'] # Meta information
 ```
 
 ### Search similar companies
@@ -120,8 +120,8 @@ response = tca.search_similar_companies(
   size: 25
 )
 
-companies = response['data']['companies'] # Companies that are similar to the domains
-meta = response['data']['meta'] # Meta information
+companies = response['companies'] # Companies that are similar to the domains
+meta = response['meta'] # Meta information
 ```
 
 ### Count companies matching your query
@@ -141,7 +141,7 @@ response = tca.count_companies(
   ]
 )
 
-count = response['data'] # Number of companies that match the query
+count = response # Number of companies that match the query
 ```
 
 ### Enrich a company from a domain name
@@ -152,7 +152,7 @@ count = response['data'] # Number of companies that match the query
 # Fetch company data from our database without enrichment (faster response)
 response = tca.fetch_company(domain: 'microsoft.com')
 
-company = response['data'] # The company profile
+company = response # The company profile
 
 # Fetch company data and re-analyze it in real-time to get fresh, up-to-date information (slower but more accurate)
 response = tca.fetch_company(
@@ -160,7 +160,7 @@ response = tca.fetch_company(
   refresh: true
 )
 
-company = response['data'] # The company profile
+company = response # The company profile
 ```
 
 ### Enrich a company from an email
@@ -173,7 +173,7 @@ company = response['data'] # The company profile
 # Fetch the company profile behind a professional email address
 response = tca.fetch_company_by_email(email: 'jack@openai.com')
 
-company = response['data'] # The company profile
+company = response # The company profile
 ```
 
 ### Enrich a company from a social network URL
@@ -184,7 +184,7 @@ company = response['data'] # The company profile
 # Fetch the company profile behind a social network URL
 response = tca.fetch_company_by_social(linkedin: 'https://www.linkedin.com/company/apple')
 
-company = response['data'] # The company profile
+company = response # The company profile
 ```
 
 ### Find a company email patterns
@@ -195,7 +195,7 @@ company = response['data'] # The company profile
 # Fetch the company email patterns for a specific domain
 response = tca.fetch_company_email_patterns(domain: 'apple.com')
 
-patterns = response['data'] # The company email patterns
+patterns = response # The company email patterns
 ```
 
 ### Ask a question about a company
@@ -217,8 +217,8 @@ response = tca.ask_company(
   ]
 )
 
-answer = response['data']['answer'] # Structured AI response
-meta = response['data']['meta'] # Meta information
+answer = response['answer'] # Structured AI response
+meta = response['meta'] # Meta information
 ```
 
 ### Fetch the context of a company
@@ -229,8 +229,8 @@ meta = response['data']['meta'] # Meta information
 # Get AI-generated strategic insights about a company
 response = tca.fetch_company_context(domain: 'microsoft.com')
 
-context = response['data']['context'] # Includes market, model, differentiators, etc.
-meta = response['data']['meta'] # Meta information
+context = response['context'] # Includes market, model, differentiators, etc.
+meta = response['meta'] # Meta information
 ```
 
 ### Fetch analytics data for a query or your lists
@@ -251,8 +251,8 @@ response = tca.fetch_companies_analytics(
   ]
 )
 
-analytics = response['data']['data'] # Aggregated values
-meta = response['data']['meta'] # Meta information
+analytics = response['data'] # Aggregated values
+meta = response['meta'] # Meta information
 ```
 
 ### Export analytics data in multiple formats for a search
@@ -274,8 +274,8 @@ response = tca.export_companies_analytics(
   ]
 )
 
-analytics = response['data']['data'] # Aggregated values
-meta = response['data']['meta'] # Meta information
+analytics = response['data'] # Aggregated values
+meta = response['meta'] # Meta information
 ```
 
 ## 🎯 Actions
@@ -292,8 +292,8 @@ response = tca.request_action(
   estimate: false
 )
 
-actions = response['data']['actions'] # Track this via fetch_actions
-meta = response['data']['meta'] # Meta information
+actions = response['actions'] # Track this via fetch_actions
+meta = response['meta'] # Meta information
 ```
 
 ### Fetch the actions for your actions
@@ -308,8 +308,8 @@ response = tca.fetch_actions(
   size: 5
 )
 
-actions = response['data']['actions'] # Actions that match the query
-meta = response['data']['meta'] # Meta information
+actions = response['actions'] # Actions that match the query
+meta = response['meta'] # Meta information
 ```
 
 ## 🏭 Industries
@@ -325,8 +325,8 @@ response = tca.search_industries(
   size: 10
 )
 
-industries = response['data']['industries'] # Industries that match the keyword
-meta = response['data']['meta'] # Meta information
+industries = response['industries'] # Industries that match the keyword
+meta = response['meta'] # Meta information
 ```
 
 ### Find similar industries
@@ -337,8 +337,8 @@ meta = response['data']['meta'] # Meta information
 # Find industries similar to given ones
 response = tca.search_industries_similar(industries: ['saas', 'fintech'])
 
-similar = response['data']['industries'] # Industries that are similar to the given ones
-meta = response['data']['meta'] # Meta information
+similar = response['industries'] # Industries that are similar to the given ones
+meta = response['meta'] # Meta information
 ```
 
 ## ⚛️ Technologies
@@ -354,8 +354,8 @@ response = tca.search_technologies(
   size: 10
 )
 
-technologies = response['data']['technologies'] # Technologies that match the keyword
-meta = response['data']['meta'] # Meta information
+technologies = response['technologies'] # Technologies that match the keyword
+meta = response['meta'] # Meta information
 ```
 
 ## 🌍 Locations
@@ -371,8 +371,8 @@ response = tca.search_cities(
   size: 5
 )
 
-cities = response['data']['cities'] # Cities that match the name
-meta = response['data']['meta'] # Meta information
+cities = response['cities'] # Cities that match the name
+meta = response['meta'] # Meta information
 ```
 
 ### Search counties
@@ -386,8 +386,8 @@ response = tca.search_counties(
   size: 5
 )
 
-counties = response['data']['counties'] # Counties that match the name
-meta = response['data']['meta'] # Meta information
+counties = response['counties'] # Counties that match the name
+meta = response['meta'] # Meta information
 ```
 
 ### Search states
@@ -401,8 +401,8 @@ response = tca.search_states(
   size: 5
 )
 
-states = response['data']['states'] # States that match the name
-meta = response['data']['meta'] # Meta information
+states = response['states'] # States that match the name
+meta = response['meta'] # Meta information
 ```
 
 ### Search countries
@@ -416,8 +416,8 @@ response = tca.search_countries(
   size: 5
 )
 
-countries = response['data']['countries'] # Countries that match the name
-meta = response['data']['meta'] # Meta information
+countries = response['countries'] # Countries that match the name
+meta = response['meta'] # Meta information
 ```
 
 ### Search continents
@@ -431,8 +431,8 @@ response = tca.search_continents(
   size: 5
 )
 
-continents = response['data']['continents'] # Continents that match the name
-meta = response['data']['meta'] # Meta information
+continents = response['continents'] # Continents that match the name
+meta = response['meta'] # Meta information
 ```
 
 ## 💼 Job titles
@@ -445,7 +445,7 @@ meta = response['data']['meta'] # Meta information
 # Enrich "chief marketing officer"
 response = tca.enrich_job_titles(name: 'chief marketing officer')
 
-job_title = response['data'] # Contains department, seniority, etc.
+job_title = response # Contains department, seniority, etc.
 ```
 
 ## 📋 Lists
@@ -458,8 +458,8 @@ job_title = response['data'] # Contains department, seniority, etc.
 # Fetch your lists
 response = tca.fetch_lists
 
-lists = response['data']['lists'] # Lists that match the query
-meta = response['data']['meta'] # Meta information
+lists = response['lists'] # Lists that match the query
+meta = response['meta'] # Meta information
 ```
 
 ### Create a list of companies
@@ -473,7 +473,7 @@ response = tca.create_list(
   type: 'companies'
 )
 
-new_list = response['data'] # The new list
+new_list = response # The new list
 ```
 
 ### Fetch companies in your list
@@ -484,8 +484,8 @@ new_list = response['data'] # The new list
 # Fetch companies in a list
 response = tca.fetch_companies_in_list(list_id: 1234)
 
-companies = response['data']['companies'] # Companies that match the list
-meta = response['data']['meta'] # Meta information
+companies = response['companies'] # Companies that match the list
+meta = response['meta'] # Meta information
 ```
 
 ### Add or remove companies in your list
@@ -499,7 +499,7 @@ response = tca.toggle_companies_in_list(
   companies: ['apple.com', 'stripe.com']
 )
 
-list = response['data'] # The updated list
+list = response # The updated list
 ```
 
 ## 👥 Teams
@@ -512,7 +512,7 @@ list = response['data'] # The updated list
 # Fetch your team details
 response = tca.fetch_team
 
-team = response['data'] # Your team details
+team = response # Your team details
 ```
 
 ## 🔧 Utilities
@@ -525,7 +525,7 @@ team = response['data'] # Your team details
 # Check API health status
 response = tca.fetch_api_health
 
-health = response['data'] # The health of the API
+health = response # The health of the API
 ```
 
 ### Fetch the OpenAPI schema
@@ -536,7 +536,7 @@ health = response['data'] # The health of the API
 # Fetch OpenAPI schema
 response = tca.fetch_open_api
 
-schema = response['data'] # The OpenAPI schema
+schema = response # The OpenAPI schema
 ```
 
 ## License

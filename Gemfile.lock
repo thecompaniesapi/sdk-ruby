@@ -9,6 +9,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     base64 (0.3.0)
+    dotenv (2.8.1)
     faraday (2.8.1)
       base64
       faraday-net_http (>= 2.0, < 3.1)
@@ -22,6 +23,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv (~> 2.8)
   minitest (~> 5.16.3)
   rake (~> 13.0.6)
   thecompaniesapi!

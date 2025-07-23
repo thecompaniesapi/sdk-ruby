@@ -28,4 +28,7 @@ Gem::Specification.new do |spec|
   # Runtime dependencies
   spec.add_runtime_dependency "faraday", "~> 2.0"
   spec.add_runtime_dependency "faraday-net_http", "~> 3.0"
+  
+  # Development dependencies
+  spec.add_development_dependency "dotenv", "~> 2.8"
 end

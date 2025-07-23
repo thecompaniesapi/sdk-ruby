@@ -9,7 +9,7 @@ require 'cgi'
 module TheCompaniesAPI
   class HttpClient
     DEFAULT_API_URL = 'https://api.thecompaniesapi.com'
-    DEFAULT_TIMEOUT = 300 # 300 seconds to match TypeScript version
+    DEFAULT_TIMEOUT = 300
 
     attr_reader :api_token, :api_url, :visitor_id, :connection
 
@@ -76,7 +76,6 @@ module TheCompaniesAPI
     end
 
     # Custom Faraday middleware for query serialization
-    # Matches the TypeScript version's querySerializer behavior
     class QuerySerializer < Faraday::Middleware
       def call(env)
         if env.method == :get && env.params && !env.params.empty?
