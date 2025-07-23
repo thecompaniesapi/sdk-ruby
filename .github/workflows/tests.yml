@@ -24,19 +24,6 @@ jobs:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true
     
-    - name: Cache gems
-      uses: actions/cache@v3
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ matrix.ruby-version }}-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-${{ matrix.ruby-version }}-
-    
-    - name: Install dependencies
-      run: |
-        bundle config path vendor/bundle
-        bundle install --jobs 4 --retry 3
-    
     - name: Validate gemspec
       run: gem build thecompaniesapi.gemspec
     
@@ -73,9 +60,6 @@ jobs:
       with:
         ruby-version: '3.2'
         bundler-cache: true
-    
-    - name: Install dependencies
-      run: bundle install --jobs 4 --retry 3
     
     - name: Check for security vulnerabilities
       run: |
