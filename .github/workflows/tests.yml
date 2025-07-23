@@ -22,7 +22,16 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
-        bundler-cache: true
+        bundler-cache: false  # Disable auto cache to handle manually
+    
+    - name: Configure Bundler
+      run: |
+        bundle config set --local path 'vendor/bundle'
+        bundle config set --local deployment 'false'
+        bundle config set --local frozen 'false'
+    
+    - name: Install dependencies
+      run: bundle install --jobs 4 --retry 3
     
     - name: Validate gemspec
       run: gem build thecompaniesapi.gemspec
@@ -59,7 +68,16 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.2'
-        bundler-cache: true
+        bundler-cache: false
+    
+    - name: Configure Bundler
+      run: |
+        bundle config set --local path 'vendor/bundle'
+        bundle config set --local deployment 'false'
+        bundle config set --local frozen 'false'
+    
+    - name: Install dependencies
+      run: bundle install --jobs 4 --retry 3
     
     - name: Check for security vulnerabilities
       run: |
